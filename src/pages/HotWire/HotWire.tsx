@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import style from './hotwire.module.scss';
 
@@ -10,7 +10,7 @@ interface IColors {
 }
 
 const HotWire: FC<{}> = () => {
-    const [ result, setResult ] = useState( [] ),
+    const [ result, setResult ] = useState( [ [ 1, 1 ], [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ] ),
         [ leftLine, setLeftLine ] = useState<string[]>( [] ),
         [ rightLine, setRightLine ] = useState<string[]>( [] );
 
@@ -28,12 +28,21 @@ const HotWire: FC<{}> = () => {
         return Object.keys( colors ).sort( () => Math.random() - 0.5 );
     };
 
+    const checkResult = useCallback( () => {
+        return result.filter( ( x ) => x[ 0 ] !== x[ 1 ] ).length === 0;
+    }, [ result ] )
+
+
     useEffect( () => {
         setLeftLine( shuffleArray( colors ) );
         setRightLine( shuffleArray( colors ) );
     }, [] )
 
-    console.log( leftLine, rightLine )
+    useEffect( () => {
+        if ( result.length === 7 ) {
+            console.log( checkResult() )
+        }
+    }, [ result, checkResult ] )
 
     return <div className={style.main}>
         <div className={style.game}>
