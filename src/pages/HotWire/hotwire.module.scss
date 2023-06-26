@@ -1,0 +1,113 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    .help {
+        position: absolute;
+        bottom: 74px;
+
+        display: flex;
+
+
+        .box {
+            padding: 13px 36px;
+
+            display: flex;
+            align-items: center;
+
+            background: #fff;
+            border-radius: 50px;
+
+            font-family: 'Inter Semibold';
+            font-size: 18px;
+            color: #000;
+
+            &:first-of-type {
+                margin-right: 26px;
+            }
+
+
+            .btn {
+                margin-right: 16px;
+                padding: 12px;
+
+                font-family: 'Inter Bold';
+                font-size: 16px;
+                color: #fff;
+
+                border-radius: 10px;
+                background: #000;
+            }
+        }
+    }
+
+    .game {
+        position: relative;
+
+        width: 762px;
+        height: 525px;
+
+        background: url(../.../../../assets/images/hotwire/background.png) no-repeat;
+        background-size: cover;
+
+
+        .gamefield {
+            position: absolute;
+            left: 163px;
+            top: 54px;
+
+            width: 387px;
+            height: 417px;
+
+            background: url(../../assets/images/hotwire/engine.png) no-repeat;
+            background-size: cover;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .line {
+                display: flex;
+                flex-direction: column;
+
+                &:last-of-type {
+                    .box {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                .box {
+                    margin: 6px 0;
+
+                    display: flex;
+                    align-items: center;
+
+
+                    .pin {
+                        width: 37px;
+                        height: 35px;
+
+                        background: url(../../assets/images/hotwire/pin.svg) no-repeat;
+                        background-size: cover;
+                    }
+
+                    .wire {
+                        width: 25px;
+                        height: 15px;
+
+                        border-radius: 2px;
+                        background: linear-gradient(180deg, var(--color1) 0%, var(--color2) 100%);
+                        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.04) inset;
+                    }
+
+                }
+            }
+        }
+
+    }
+}
