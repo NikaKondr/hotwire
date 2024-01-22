@@ -369,6 +369,7 @@ const HotWire: FC<{}> = () => {
 
     const handleKeyUp = useCallback( ( e: any ) => {
         if ( e.keyCode === 27 ) {
+            console.log( InterfaceName.HotWire, 'exit' )
             EventManager.emitServer( InterfaceName.HotWire, 'exit' )
         }
     }, [] )
@@ -436,7 +437,7 @@ const HotWire: FC<{}> = () => {
 
     useEffect( () => {
         if ( isGameFinished ) {
-            console.log( 'game finished' );
+            console.log( InterfaceName.HotWire, 'gameFinished' );
             EventManager.emitServer( InterfaceName.HotWire, 'gameFinished' )
         }
     }, [ isGameFinished ] )
@@ -496,6 +497,10 @@ const HotWire: FC<{}> = () => {
                 <div className={style.box}>
                     <div className={style.btn}>ЛКМ</div>
                     <span>Перетащить провод</span>
+                </div>
+                <div className={style.box}>
+                    <div className={style.btn}>ПКМ</div>
+                    <span>Отменить</span>
                 </div>
                 <div className={style.box}>
                     <div className={style.btn}>Esc</div>
