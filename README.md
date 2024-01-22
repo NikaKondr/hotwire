@@ -97,9 +97,10 @@ npm start
 
   
 
-Вы так же можете проверить работоспособность ивента вызва его в консоли браузера
+Вы так же можете проверить работоспособность ивента вызвав его в консоли браузера
 
-``callHandler('router:setComponent', 'hotWire')``
+``callHandler('router:setComponent', 'hotWire')`` ||
+``callHandler('router:setComponent', null)``
 
   
 
