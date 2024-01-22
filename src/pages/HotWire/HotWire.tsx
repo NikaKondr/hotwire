@@ -66,7 +66,7 @@ const HotWire: FC<{}> = () => {
 
     const checkResult = useCallback( () => {
         const connectedCorrectCount = Object.entries( result ).reduce( ( count, [ key, { connectedPinId } ] ) => {
-            if ( +key === ( connectedPinId as number ) ) {
+            if ( +key === connectedPinId ) {
                 return count + 1;
             }
             return count;
@@ -154,100 +154,97 @@ const HotWire: FC<{}> = () => {
         }
     }, [ lineWidth ] );
 
-    const handlePinClick = useCallback(
-        ( event: any, pinId: number, side: 'left' | 'right' ) => {
-            if ( ( side === 'left' && ( selectedPin === pinId || drawing ) ) ) return;
-            if ( selectedPin === null && side === 'left' ) {
-                setSelectedPin( pinId );
-                if ( selectedPin === pinId ) return;
+    const handlePinClick = useCallback( ( event: any, pinId: number, side: 'left' | 'right' ) => {
+        if ( ( side === 'left' && ( selectedPin === pinId || drawing ) ) ) return;
+        if ( selectedPin === null && side === 'left' ) {
+            setSelectedPin( pinId );
+            if ( selectedPin === pinId ) return;
 
-                setDrawing( true );
-                const isPinConnected = Object.keys( result ).filter( item => +item === pinId ).length > 0;
+            setDrawing( true );
+            const isPinConnected = Object.keys( result ).filter( item => +item === pinId ).length > 0;
 
-                if ( isPinConnected ) {
-                    const updatedResult = { ...result };
-                    delete updatedResult[ pinId ];
+            if ( isPinConnected ) {
+                const updatedResult = { ...result };
+                delete updatedResult[ pinId ];
 
-                    const resultCanvas = resultCanvasRef.current;
+                const resultCanvas = resultCanvasRef.current;
 
-                    if ( resultCanvas ) {
-                        const ctx = resultCanvas.getContext( '2d' );
-                        if ( ctx ) {
-                            ctx.clearRect( 0, 0, resultCanvas.width, resultCanvas.height );
-                            drawLines( ctx, updatedResult );
-                        }
+                if ( resultCanvas ) {
+                    const ctx = resultCanvas.getContext( '2d' );
+                    if ( ctx ) {
+                        ctx.clearRect( 0, 0, resultCanvas.width, resultCanvas.height );
+                        drawLines( ctx, updatedResult );
                     }
                 }
+            }
 
-                const drawingCanvas = drawingCanvasRef.current;
+            const drawingCanvas = drawingCanvasRef.current;
 
-                if ( drawingCanvas ) {
-                    const curveX = Math.random() * ( 0.85 - 0.15 ) + 0.15;
-                    const curveY = Math.random() * ( 0.55 - 0.05 ) + 0.05;
-                    setCurveFactorX( curveX );
-                    setCurveFactorY( curveY );
-                    setDrawing( true );
+            if ( drawingCanvas ) {
+                const curveX = Math.random() * ( 0.85 - 0.15 ) + 0.15;
+                const curveY = Math.random() * ( 0.55 - 0.05 ) + 0.05;
+                setCurveFactorX( curveX );
+                setCurveFactorY( curveY );
+                setDrawing( true );
 
-                    setDrawingPoints( {
-                        ...drawingPoints, start: {
+                setDrawingPoints( {
+                    ...drawingPoints, start: {
+                        x: event.target.offsetLeft + event.target.clientWidth - 1,
+                        y: event.target.offsetTop + ( event.target.clientHeight / 2 )
+                    },
+                    curveX,
+                    curveY,
+                    color: '#808080'
+                } );
+
+                setResult( {
+                    ...result, [ pinId ]: {
+                        ...result[ pinId ],
+                        start: {
                             x: event.target.offsetLeft + event.target.clientWidth - 1,
                             y: event.target.offsetTop + ( event.target.clientHeight / 2 )
                         },
                         curveX,
                         curveY,
-                        color: '#808080'
-                    } );
-
-                    setResult( {
-                        ...result, [ pinId ]: {
-                            ...result[ pinId ],
-                            start: {
-                                x: event.target.offsetLeft + event.target.clientWidth - 1,
-                                y: event.target.offsetTop + ( event.target.clientHeight / 2 )
-                            },
-                            curveX,
-                            curveY,
-                            color: '#808080',
-                            connectedPinId: -1,
-                        }
-                    } );
-                }
-
-            } else if ( side === 'right' && selectedPin !== null ) {
-
-                const isPinConnected = Object.values( result ).filter( item => item.connectedPinId === pinId ).length > 0;
-
-                if ( isPinConnected ) return;
-
-                setDrawing( false );
-
-                if ( selectedPin === pinId ) {
-                    setResult( {
-                        ...result, [ selectedPin ]: {
-                            ...drawingPoints,
-                            end: { x: event.target.offsetParent.offsetLeft + 1, y: event.target.offsetParent.offsetTop + ( event.target.offsetParent.clientHeight / 2 ) },
-                            color: colors[ selectedPin ].color[ 1 ],
-                            connectedPinId: pinId,
-                        }
-                    } );
-                } else {
-                    setResult( {
-                        ...result, [ selectedPin ]: {
-                            ...drawingPoints,
-                            end: { x: event.target.offsetParent.offsetLeft + 1, y: event.target.offsetParent.offsetTop + ( event.target.offsetParent.clientHeight / 2 ) },
-                            connectedPinId: pinId,
-                        }
-                    } );
-                }
-                setSelectedPin( null );
-                setDrawingPoints( { start: null, end: null, curveX: 0.5, curveY: 0.3, color: '#808080' } );
-            } else {
-                setDrawing( false );
-                setSelectedPin( null );
+                        color: '#808080',
+                        connectedPinId: -1,
+                    }
+                } );
             }
-        },
-        [ colors, drawLines, drawing, drawingPoints, result, selectedPin ]
-    );
+
+        } else if ( side === 'right' && selectedPin !== null ) {
+
+            const isPinConnected = Object.values( result ).filter( item => item.connectedPinId === pinId ).length > 0;
+
+            if ( isPinConnected ) return;
+
+            setDrawing( false );
+
+            if ( selectedPin === pinId ) {
+                setResult( {
+                    ...result, [ selectedPin ]: {
+                        ...drawingPoints,
+                        end: { x: event.target.offsetParent.offsetLeft + 1, y: event.target.offsetParent.offsetTop + ( event.target.offsetParent.clientHeight / 2 ) },
+                        color: colors[ selectedPin ].color[ 1 ],
+                        connectedPinId: pinId,
+                    }
+                } );
+            } else {
+                setResult( {
+                    ...result, [ selectedPin ]: {
+                        ...drawingPoints,
+                        end: { x: event.target.offsetParent.offsetLeft + 1, y: event.target.offsetParent.offsetTop + ( event.target.offsetParent.clientHeight / 2 ) },
+                        connectedPinId: pinId,
+                    }
+                } );
+            }
+            setSelectedPin( null );
+            setDrawingPoints( { start: null, end: null, curveX: 0.5, curveY: 0.3, color: '#808080' } );
+        } else {
+            setDrawing( false );
+            setSelectedPin( null );
+        }
+    }, [ colors, drawLines, drawing, drawingPoints, result, selectedPin ] );
 
     const handleMouseMove = useCallback( ( event: any ) => {
         const drawingCanvas = drawingCanvasRef.current;
