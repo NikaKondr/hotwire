@@ -1,11 +1,30 @@
-import HotWire from 'pages/HotWire/HotWire';
-import React from 'react';
+import { useEffect, useState } from 'react';
+import EventManager from 'utils/eventManager';
+
+import HotWire from 'pages/HotWire';
+
+
+export enum InterfaceName {
+  HotWire = 'hotWire',
+}
 
 const App = () => {
+  const [ component, setComponent ] = useState<InterfaceName | null>( null );
+
+  useEffect( () => {
+    EventManager.addHandler( 'router', 'setComponent', ( componentPage: InterfaceName ) => {
+      setComponent( componentPage );
+    } )
+    EventManager.stopAddingHandlers( 'router' );
+    return () => {
+      EventManager.removeTargetHandlers( 'router' );
+    };
+  }, [] )
+
   return (
-    <div className="App">
-      <HotWire />
-    </div>
+    <>
+      {component === InterfaceName.HotWire && <HotWire />}
+    </>
   );
 }
 

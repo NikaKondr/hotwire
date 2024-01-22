@@ -1,5 +1,15 @@
-const { alias, configPaths } = require( 'react-app-rewire-alias' )
+const { configPaths } = require( 'react-app-rewire-alias' )
+const { aliasDangerous } = require( 'react-app-rewire-alias/lib/aliasDangerous' );
 
 module.exports = function override ( config ) {
-    return alias( configPaths( './tsconfig.paths.json' ) )( config );
+    config.entry = {
+        main: [
+            require.resolve( './pre-load.ts' ),
+        ]
+    };
+    aliasDangerous( {
+        ...configPaths( './tsconfig.paths.json' )
+    } )( config )
+
+    return config;
 }
