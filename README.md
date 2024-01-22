@@ -1,11 +1,11 @@
 
 # HotWire React Application
 
-  
+  ### [Demo](https://nikakondr.github.io/hotwire/)
 
 Данная мини-игра была сделана специально для конкурса от [ragemp.pro](https://ragemp.pro/threads/novogodnij-konkurs-2024-razvivaem-portal-vmeste.9661/)
 
-  
+  ![enter image description here](https://cdn.discordapp.com/attachments/639420321677443073/1198797084611055656/IMG_2801_1.gif?ex=65c035c9&is=65adc0c9&hm=eb45c94a9d900da631794d35b2cc88608786676528c5dd329ac84eba9acaac90&)
 
 ## Установка зависимостей
 
