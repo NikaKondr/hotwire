@@ -113,6 +113,9 @@ npm start
 
 ``(hotWire:gameFinished)``
 
+## Лицензия
+
+Этот проект лицензирован в соответствии с лицензией MIT - подробности см. в файле [LICENSE](LICENSE).
 
 ## Автор
 - [Nikа Kondr](https://ragemp.pro/threads/frontend-developer-s-fokusom-na-react-typescript-mobx.7552/) (discord: nkondr)
